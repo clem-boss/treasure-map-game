@@ -10,7 +10,7 @@ export class FileService {
   error!: Error | null;
   fileState = FileStates.EMPTY;
 
-  constructor(protected treasureMapService: TreasureMapService) {
+  constructor(private readonly treasureMapService: TreasureMapService) {
     this.reader.addEventListener('load', () => this.processFile(this.reader.result as string));
   }
 

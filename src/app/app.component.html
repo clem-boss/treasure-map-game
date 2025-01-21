@@ -5,27 +5,27 @@
 </h2>
 <hr>
 <div class="grid">
-  @if (fileService.fileState !== fileStates.FILE_PLAYED) {
+  @if (fileState !== fileStates.FILE_PLAYED) {
     <input class="cell input is-col-span-2" type="file" (change)="handleFileProcessing($event)" />
-    <button class="cell button is-primary" (click)="handleGamePlaying()" [disabled]="fileService.fileState === fileStates.EMPTY">Play !</button>
-    @if (fileService.error) {
-      <p class="cell help is-danger is-col-span-3">{{ fileService.error.message }}</p>
+    <button class="cell button is-primary" (click)="handleGamePlaying()" [disabled]="fileState === fileStates.EMPTY">Play !</button>
+    @if (fileError) {
+      <p class="cell help is-danger is-col-span-3">{{ fileError.message }}</p>
     }
   }
   @else {
     <button class="cell button is-col-span-2" (click)="handleGameResetting()">Reset</button>
   }
   <div class="cell is-col-span-3">
-    <pre>C - {{ treasureMapService.treasureMap.width }} - {{ treasureMapService.treasureMap.height }}</pre>
-      @for (mountain of treasureMapService.mountains; track $index) {
+    <pre>C - {{ treasureMapContext.map.width }} - {{ treasureMapContext.map.height }}</pre>
+      @for (mountain of treasureMapContext.mountains; track $index) {
         <pre>M - {{ mountain[0] }} - {{ mountain[1] }}</pre>
       }
-      @for (treasure of treasureMapService.treasures; track $index) {
+      @for (treasure of treasureMapContext.treasures; track $index) {
         @if (treasure.count) {
           <pre>T - {{ treasure.coords[0] }} - {{ treasure.coords[1] }} - {{ treasure.count }}</pre>
         }
       }
-      @for (adventurer of treasureMapService.adventurers; track $index) {
+      @for (adventurer of treasureMapContext.adventurers; track $index) {
         <pre>A - {{ adventurer.name }} - {{ adventurer.coords[0] }} - {{ adventurer.coords[1] }} - {{ directions[adventurer.direction][0] }} - {{ adventurer.treasureCount }}</pre>
       }
 

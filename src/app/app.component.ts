@@ -15,6 +15,24 @@ import { MovementValidationService } from './services/movement-validation.servic
 export class AppComponent {
   fileStates = FileStates;
   directions = Directions;
+
+  get fileState() {
+    return this.fileService.fileState;
+  }
+
+  get fileError() {
+    return this.fileService.error;
+  }
+
+  get treasureMapContext() {
+    return {
+      map: this.treasureMapService.treasureMap,
+      mountains: this.treasureMapService.mountains,
+      treasures: this.treasureMapService.treasures,
+      adventurers: this.treasureMapService.adventurers
+    }
+  }
+
   gameRules = [
     {
       actionCodePredicate: (code: ActionCode) => code === 'A',
@@ -32,8 +50,8 @@ export class AppComponent {
 
   // TODO create generic fileInput component
   constructor(
-    protected fileService: FileService,
-    protected treasureMapService: TreasureMapService,
+    private readonly fileService: FileService,
+    private readonly treasureMapService: TreasureMapService,
     private readonly movementValidationService: MovementValidationService
   ) {
   }
