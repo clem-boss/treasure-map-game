@@ -4,31 +4,30 @@
   An example file named <code>input.txt</code> is available at the root of this project.
 </h2>
 <hr>
-<div class="grid">
-  @if (fileState !== fileStates.FILE_PLAYED) {
-    <input class="cell input is-col-span-2" type="file" (change)="handleFileProcessing($event)" />
-    <button class="cell button is-primary" (click)="handleGamePlaying()" [disabled]="fileState === fileStates.EMPTY">Play !</button>
+@if (fileState !== fileStates.FILE_PLAYED) {
+  <div class="is-flex mb-4">
+    <input data-testid="file-input" class="input mr-4" type="file" (change)="handleFileProcessing($event)" />
+    <button class="button is-primary" (click)="handleGamePlaying()" [disabled]="fileState === fileStates.EMPTY">Play !</button>
     @if (fileError) {
-      <p class="cell help is-danger is-col-span-3">{{ fileError.message }}</p>
+      <p class="help is-danger">{{ fileError.message }}</p>
     }
-  }
-  @else {
-    <button class="cell button is-col-span-2" (click)="handleGameResetting()">Reset</button>
-  }
-  <div class="cell is-col-span-3">
-    <pre>C - {{ treasureMapContext.map.width }} - {{ treasureMapContext.map.height }}</pre>
-      @for (mountain of treasureMapContext.mountains; track $index) {
-        <pre>M - {{ mountain[0] }} - {{ mountain[1] }}</pre>
-      }
-      @for (treasure of treasureMapContext.treasures; track $index) {
-        @if (treasure.count) {
-          <pre>T - {{ treasure.coords[0] }} - {{ treasure.coords[1] }} - {{ treasure.count }}</pre>
-        }
-      }
-      @for (adventurer of treasureMapContext.adventurers; track $index) {
-        <pre>A - {{ adventurer.name }} - {{ adventurer.coords[0] }} - {{ adventurer.coords[1] }} - {{ directions[adventurer.direction][0] }} - {{ adventurer.treasureCount }}</pre>
-      }
-
   </div>
-  <!-- <p class="cell is-col-span-3 is-size-7"><a (click)="handleGameRulesPdfOpening()">Click here</a> to find out about the game's rules and context.</p> -->
+}
+@else {
+  <button class="button mb-4" (click)="handleGameResetting()">Reset</button>
+}
+<pre>C - {{ treasureMapContext.map.width }} - {{ treasureMapContext.map.height }}</pre>
+@for (mountain of treasureMapContext.mountains; track $index) {
+  <pre>M - {{ mountain[0] }} - {{ mountain[1] }}</pre>
+}
+@for (treasure of treasureMapContext.treasures; track $index) {
+  @if (treasure.count) {
+    <pre>T - {{ treasure.coords[0] }} - {{ treasure.coords[1] }} - {{ treasure.count }}</pre>
+  }
+}
+@for (adventurer of treasureMapContext.adventurers; track $index) {
+  <pre>A - {{ adventurer.name }} - {{ adventurer.coords[0] }} - {{ adventurer.coords[1] }} - {{ directions[adventurer.direction][0] }} - {{ adventurer.treasureCount }}</pre>
+}
+<!-- <p class="cell is-col-span-3 is-size-7"><a (click)="handleGameRulesPdfOpening()">Click here</a> to find out about the game's rules and context.</p> -->
+<div class="grid">
 </div>
