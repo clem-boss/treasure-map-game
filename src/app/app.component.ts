@@ -53,20 +53,17 @@ export class AppComponent {
     private readonly fileService: FileService,
     private readonly treasureMapService: TreasureMapService,
     private readonly movementValidationService: MovementValidationService
-  ) {
-  }
-  // TODO test with ATL
+  ) { }
+
   handleFileProcessing(event: Event) {
-    this.fileService.readFile((event.target as HTMLInputElement).files?.item(0) as File);
+    this.fileService.readFile((event.target as HTMLInputElement).files?.[0] as File);
   }
 
-  // TODO test with ATL
   handleGamePlaying() {
     this.playTreasureMapGame();
     this.fileService.fileState = FileStates.FILE_PLAYED;
   }
 
-  // TODO test with ATL
   handleGameResetting() {
     this.treasureMapService.resetTreasureMapElements();
     this.fileService.fileState = FileStates.EMPTY;

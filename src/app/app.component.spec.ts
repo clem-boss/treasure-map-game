@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { render, screen, fireEvent } from '@testing-library/angular'
+import { screen, fireEvent } from '@testing-library/angular'
 import { AppComponent } from './app.component';
 import { TreasureMapService } from './services/treasure-map.service';
 import { Directions } from './models';
 import * as utils from './utils';
 import { MovementValidationService } from './services/movement-validation.service';
+import { FileService } from './services/file.service';
 
 describe('AppComponent', () => {
   let treasureMapService: TreasureMapService;
   let movementValidationService: MovementValidationService;
+  let fileService: FileService;
 
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
@@ -19,11 +21,13 @@ describe('AppComponent', () => {
       providers: [
         TreasureMapService,
         MovementValidationService,
+        FileService
       ]
     }).compileComponents();
 
     treasureMapService = TestBed.inject(TreasureMapService);
     movementValidationService = TestBed.inject(MovementValidationService);
+    fileService = TestBed.inject(FileService);
     treasureMapService.sequenceLength = 1;
 
     fixture = TestBed.createComponent(AppComponent);
@@ -38,7 +42,6 @@ describe('AppComponent', () => {
   describe('Rotation functions', () => {
     it('Should rotate right adventurer if action code is D', () => {
       const rotateRightSpy = jest.spyOn(utils, 'rotateRight');
-      treasureMapService.sequenceLength = 1;
       treasureMapService.adventurers = [
         {
           name: 'Lara',
@@ -81,7 +84,6 @@ describe('AppComponent', () => {
 
     it('Should rotate left adventurer if action code is G', () => {
       const rotateLeftSpy = jest.spyOn(utils, 'rotateLeft');
-      treasureMapService.sequenceLength = 1;
       treasureMapService.adventurers = [
         {
           name: 'Lara',
@@ -191,25 +193,23 @@ describe('AppComponent', () => {
   });
 
   describe('User Events', () => {
-    // it('Should trigger file reading on click', async () => {
-    //   await render(AppComponent);
+    it('Should trigger file reading on click', () => {
+      const fileInput = screen.getByTestId('file-input');
+      const readFileSpy = jest.spyOn(fileService, 'readFile');
+      const file = new File(["foo"], "foo.txt", { type: "text/plain" });
 
-    //   const incrementButton = screen.getByRole('button', {name: '+'})
-    //   fireEvent.click(incrementButton)
+      fireEvent.change(fileInput, { target: { files: [file]}});
 
-    //   expect(screen.getByText('Current Count: 6')).toBeVisible()
-    // });
+      expect(readFileSpy).toHaveBeenCalled();
+    });
 
-    // Should trigger game playing
-    // Should trigger game resetting
-    //
+    it ('Should trigger game playing on click on button', () => {
+      const playButton = screen.getByTestId('play-button');
+      const playTreasureMapSpy = jest.spyOn(component, 'playTreasureMapGame');
+
+      fireEvent.click(playButton);
+
+      expect(playTreasureMapSpy).toHaveBeenCalled();
+    });
   });
-
-  // Move functions
-  // Should move adventurer if action code is A and projected position is empty
-  // Should not move adventurer if action code is A but projected position is occupied
-
-  // Treasure picking functions
-  // Should pick one treasure if there are some
-  // Should not pick treasure if every treasures on targeted position has been picked
 });
