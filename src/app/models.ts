@@ -1,17 +1,12 @@
 export type Coords = [number, number];
-export type ActionCode = 'A' | 'D' | 'G';
+export type ActionCode = "A" | "D" | "G";
+export type FileState = "EMPTY" | "LOADED" | "PLAYED";
 
 export enum Directions {
   NORTH = 1,
   EAST,
   SOUTH,
   WEST,
-}
-
-export enum FileStates {
-  EMPTY = 1,
-  FILE_LOADED,
-  FILE_PLAYED,
 }
 
 export interface Adventurer {

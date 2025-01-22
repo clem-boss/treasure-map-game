@@ -20,7 +20,7 @@ describe('MovementValidationService', () => {
         coords: [1, 1],
         direction: Directions.EAST,
         name: 'Lara',
-        sequence: ['A'],
+        sequence: ["A"],
         treasureCount: 0
       }
     ]
@@ -30,19 +30,25 @@ describe('MovementValidationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("Should not move player is action code is A but there's a mountain", () => {
+  it("Should move player if its possible", () => {
+    const adventurerCoordsProjection = [0, 3] as Coords;
+
+    expect(service.canMove(adventurerCoordsProjection)).toBeTruthy();
+  })
+
+  it("Should not move player if there's a mountain", () => {
     const adventurerCoordsProjection = [0, 1] as Coords;
 
     expect(service.canMove(adventurerCoordsProjection)).toBeFalsy();
   });
 
-  it("Should not move player if action code is A but there's another player", () => {
+  it("Should not move player if there's another player", () => {
     const adventurerCoordsProjection = [1, 1] as Coords;
 
     expect(service.canMove(adventurerCoordsProjection)).toBeFalsy();
   });
 
-  it("Should not move player if action code is A but the targeted position is out of bounds", () => {
+  it("Should not move player if the targeted position is out of bounds", () => {
     const adventurerCoordsProjection = [-1, 8] as Coords;
 
     expect(service.canMove(adventurerCoordsProjection)).toBeFalsy();

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Adventurer, ActionCode, Directions, FileStates } from './models';
+import { Adventurer, Directions } from './models';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileService } from './services/file.service';
 import { areCoordsEqual, moveDescriptionsMap, rotateLeft, rotateRight } from './utils';
@@ -13,7 +13,6 @@ import { MovementValidationService } from './services/movement-validation.servic
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  fileStates = FileStates;
   directions = Directions;
 
   get fileState() {
@@ -33,22 +32,25 @@ export class AppComponent {
     }
   }
 
-  gameRulesMap = [
+  gameRulesMap: [
+  {actionCode: "A", actionResult: Function},
+  {actionCode: "D", actionResult: Function},
+  {actionCode: "G", actionResult: Function},
+  ] = [
     {
-      actionCodePredicate: (code: ActionCode) => code === 'A',
+      actionCode: "A",
       actionResult: (adventurer: Adventurer) => this.moveAdventurer(adventurer)
     },
     {
-      actionCodePredicate: (code: ActionCode) => code === 'D',
+      actionCode: "D",
       actionResult: (adventurer: Adventurer) => adventurer.direction = rotateRight(adventurer.direction)
     },
     {
-      actionCodePredicate: (code: ActionCode) => code === 'G',
+      actionCode: "G",
       actionResult: (adventurer: Adventurer) => adventurer.direction = rotateLeft(adventurer.direction)
     }
   ];
 
-  // TODO create generic fileInput component
   constructor(
     private readonly fileService: FileService,
     private readonly treasureMapService: TreasureMapService,
@@ -61,22 +63,18 @@ export class AppComponent {
 
   handleGamePlaying() {
     this.playTreasureMapGame();
-    this.fileService.fileState = FileStates.FILE_PLAYED;
+    this.fileService.fileState = "PLAYED";
   }
 
   handleGameResetting() {
     this.treasureMapService.resetTreasureMapElements();
-    this.fileService.fileState = FileStates.EMPTY;
+    this.fileService.fileState = "EMPTY";
   }
-
-  // handleGameRulesPdfOpening() {
-  //   window.open('https://bulma.io', '_blank');
-  // }
 
   playTreasureMapGame() {
     for (let i = 0; i < this.treasureMapService.sequenceLength; i++) {
       for (let adventurer of this.treasureMapService.adventurers) {
-        this.gameRulesMap.find(rule => rule.actionCodePredicate(adventurer.sequence[i]))?.actionResult(adventurer);
+        this.gameRulesMap.filter(rule => rule.actionCode === adventurer.sequence[i])[0].actionResult(adventurer);
       }
     }
   }

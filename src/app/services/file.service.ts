@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreasureMapService } from './treasure-map.service';
-import { FileStates } from '../models';
+import { FileState } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { FileStates } from '../models';
 export class FileService {
   readonly reader = new FileReader();
   error!: Error | null;
-  fileState = FileStates.EMPTY;
+  fileState: FileState = "EMPTY";
 
   constructor(private readonly treasureMapService: TreasureMapService) {
     this.reader.addEventListener('load', () => this.processFile(this.reader.result as string));
@@ -21,11 +21,11 @@ export class FileService {
   processFile(readerResult: string) {
     try {
       this.treasureMapService.buildTreasureMapElements(readerResult);
-      this.fileState = FileStates.FILE_LOADED;
+      this.fileState = "LOADED";
       this.error = null;
     }
     catch (error) {
-      this.fileState = FileStates.EMPTY;
+      this.fileState = "EMPTY";
       this.error = error as Error;
     }
   }

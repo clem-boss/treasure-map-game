@@ -4,10 +4,10 @@
   An example file named <code>input.txt</code> is available at the root of this project.
 </h2>
 <hr>
-@if (fileState !== fileStates.FILE_PLAYED) {
+@if (fileState !== "PLAYED") {
   <div class="is-flex mb-3">
     <input data-testid="file-input" class="input mr-4" type="file" (change)="handleFileProcessing($event)" />
-    <button data-testid="play-button" class="button is-primary" (click)="handleGamePlaying()" [disabled]="fileState === fileStates.EMPTY">Play !</button>
+    <button data-testid="play-button" class="button is-primary" (click)="handleGamePlaying()" [disabled]="fileState === 'EMPTY'">Play !</button>
   </div>
   @if (fileError) {
     <p class="help is-danger mb-3">{{ fileError.message }}</p>
@@ -28,6 +28,5 @@
 @for (adventurer of treasureMapContext.adventurers; track $index) {
   <pre>A - {{ adventurer.name }} - {{ adventurer.coords[0] }} - {{ adventurer.coords[1] }} - {{ directions[adventurer.direction][0] }} - {{ adventurer.treasureCount }}</pre>
 }
-<!-- <p class="cell is-col-span-3 is-size-7"><a (click)="handleGameRulesPdfOpening()">Click here</a> to find out about the game's rules and context.</p> -->
 <div class="grid">
 </div>

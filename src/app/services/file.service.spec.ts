@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { FileService } from './file.service';
 import { TreasureMapService } from './treasure-map.service';
-import { FileStates } from '../models';
 
 describe('FileReadingService', () => {
   let service: FileService;
@@ -35,7 +34,7 @@ describe('FileReadingService', () => {
 
     service.processFile("");
 
-    expect(service.fileState).toBe(FileStates.FILE_LOADED);
+    expect(service.fileState).toBe("LOADED");
     expect(service.error).toBeNull();
   });
 
@@ -44,7 +43,7 @@ describe('FileReadingService', () => {
 
     service.processFile("");
 
-    expect(service.fileState).toBe(FileStates.EMPTY);
+    expect(service.fileState).toBe("EMPTY");
     expect(service.error).not.toBeNull();
   });
 });
