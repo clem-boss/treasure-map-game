@@ -19,7 +19,7 @@ const stringToDirectionMap = [
   }
 ];
 
-export const moveDescriptions = [
+export const moveDescriptionsMap = [
   {
     directionPredicate: (adventurer: Adventurer) => adventurer.direction === Directions.NORTH,
     coordsProjection: (adventurer: Adventurer): Coords => [adventurer.coords[0], adventurer.coords[1]-1],

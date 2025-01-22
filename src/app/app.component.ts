@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Adventurer, ActionCode, Directions, FileStates } from './models';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileService } from './services/file.service';
-import { areCoordsEqual, moveDescriptions, rotateLeft, rotateRight } from './utils';
+import { areCoordsEqual, moveDescriptionsMap, rotateLeft, rotateRight } from './utils';
 import { TreasureMapService } from './services/treasure-map.service';
 import { MovementValidationService } from './services/movement-validation.service';
 
@@ -33,7 +33,7 @@ export class AppComponent {
     }
   }
 
-  gameRules = [
+  gameRulesMap = [
     {
       actionCodePredicate: (code: ActionCode) => code === 'A',
       actionResult: (adventurer: Adventurer) => this.moveAdventurer(adventurer)
@@ -76,13 +76,13 @@ export class AppComponent {
   playTreasureMapGame() {
     for (let i = 0; i < this.treasureMapService.sequenceLength; i++) {
       for (let adventurer of this.treasureMapService.adventurers) {
-        this.gameRules.find(rule => rule.actionCodePredicate(adventurer.sequence[i]))?.actionResult(adventurer);
+        this.gameRulesMap.find(rule => rule.actionCodePredicate(adventurer.sequence[i]))?.actionResult(adventurer);
       }
     }
   }
 
   moveAdventurer(adventurer: Adventurer) {
-    moveDescriptions.filter(rule => rule.directionPredicate(adventurer) && this.movementValidationService.canMove(rule.coordsProjection(adventurer))).forEach(rule => {
+    moveDescriptionsMap.filter(rule => rule.directionPredicate(adventurer) && this.movementValidationService.canMove(rule.coordsProjection(adventurer))).forEach(rule => {
       adventurer.coords = rule.coordsProjection(adventurer);
       this.pickTreasureIfAny(adventurer);
     });
